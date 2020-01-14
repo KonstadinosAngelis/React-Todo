@@ -4,11 +4,6 @@ import TodoForm from './components/TodoComponents/TodoForm'
 import TodoList from './components/TodoComponents/TodoList'
 
 const ListOfToDos = [
-  {
-    task: 'Dummy Data',
-    id: Date.now(),
-    completed: false
-  }
 ]
 
 class App extends React.Component {
@@ -31,6 +26,33 @@ class App extends React.Component {
     });
   };
 
+  checkItem = id => {
+    const checkedItemList = this.state.ToDoList.map(item => {
+      if (item.id === id){
+        return{
+          ...item, 
+          completed: !item.completed
+        };
+      } else {
+        return item
+      }
+
+    });
+    this.setState({
+      ToDoList: checkedItemList
+    })
+  }
+
+  clearCompletedItems = () => {
+    // const completedList = this.state.TodoList
+    // console.log(completedList);
+    const completedList = this.state.ToDoList.filter(function (el) {
+      return el.completed === false;
+    })
+
+    this.setState({ToDoList: completedList})
+  }
+
   render() {
     return (
       <div className = "App">
@@ -38,7 +60,11 @@ class App extends React.Component {
         <h2>Welcome to your Todo App!</h2>
         <TodoForm addToList = {this.addToList}/>
         </div>
-        <TodoList ToDoList = {this.state.ToDoList}/>
+        <TodoList 
+        ToDoList = {this.state.ToDoList} 
+        checkItem = {this.checkItem}
+        clearCompletedItems = {this.clearCompletedItems}
+        />
       </div>
     );
   }
